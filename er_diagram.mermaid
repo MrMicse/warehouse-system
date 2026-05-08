@@ -1,14 +1,3 @@
-%% =====================================================================
-%% ER-диаграмма базы данных «Учёт материальных ценностей» (warehouse_db)
-%% Mermaid (IE/Crow's Foot нотация)
-%%
-%% Как использовать:
-%%   1) Mermaid Live Editor:  https://mermaid.live  - вставьте этот код
-%%   2) В draw.io:  Extras (Дополнительно) -> Edit Diagram (Изменить XML)
-%%      ИЛИ: + Add Shape -> Advanced -> Mermaid -> вставьте код
-%%   3) В VS Code: расширение "Markdown Preview Mermaid Support"
-%% =====================================================================
-
 erDiagram
     ROLES ||--o{ USERS : "имеет роль"
     USERS ||--o{ WAREHOUSES : "ответственный за"
