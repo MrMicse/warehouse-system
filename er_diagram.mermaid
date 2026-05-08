@@ -1,0 +1,118 @@
+%% =====================================================================
+%% ER-диаграмма базы данных «Учёт материальных ценностей» (warehouse_db)
+%% Mermaid (IE/Crow's Foot нотация)
+%%
+%% Как использовать:
+%%   1) Mermaid Live Editor:  https://mermaid.live  - вставьте этот код
+%%   2) В draw.io:  Extras (Дополнительно) -> Edit Diagram (Изменить XML)
+%%      ИЛИ: + Add Shape -> Advanced -> Mermaid -> вставьте код
+%%   3) В VS Code: расширение "Markdown Preview Mermaid Support"
+%% =====================================================================
+
+erDiagram
+    ROLES ||--o{ USERS : "имеет роль"
+    USERS ||--o{ WAREHOUSES : "ответственный за"
+    USERS ||--o{ MOVEMENTS : "создаёт операцию"
+    USERS ||--o{ INVENTORY_CHECKS : "проводит проверку"
+    USERS ||--o{ AUDIT_LOG : "вносит изменение"
+
+    CATEGORIES ||--o{ ITEMS : "классифицирует"
+    WAREHOUSES ||--o{ ITEMS : "хранится на"
+    SUPPLIERS  ||--o{ MOVEMENTS : "поставляет"
+    WAREHOUSES ||--o{ MOVEMENTS : "движение на складе"
+
+    ITEMS ||--o{ MOVEMENTS : "движения"
+    ITEMS ||--o{ INVENTORY_CHECKS : "инвентаризации"
+    ITEMS ||--o{ AUDIT_LOG : "журнал"
+
+    ROLES {
+        int role_id PK
+        varchar role_name UK
+        varchar description
+    }
+
+    USERS {
+        int user_id PK
+        varchar login UK
+        varchar password_hash
+        varchar full_name
+        varchar email UK
+        int role_id FK
+        tinyint is_active
+        datetime created_at
+    }
+
+    CATEGORIES {
+        int category_id PK
+        varchar name UK
+        varchar description
+        varchar unit
+    }
+
+    SUPPLIERS {
+        int supplier_id PK
+        varchar name
+        varchar contact_person
+        varchar phone
+        varchar email
+        varchar inn UK
+        datetime created_at
+    }
+
+    WAREHOUSES {
+        int warehouse_id PK
+        varchar name
+        varchar address
+        int responsible_user_id FK
+        datetime created_at
+    }
+
+    ITEMS {
+        int item_id PK
+        varchar item_code UK
+        varchar name
+        text description
+        int category_id FK
+        decimal unit_price
+        int min_quantity
+        int current_quantity
+        int warehouse_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    MOVEMENTS {
+        int movement_id PK
+        int item_id FK
+        varchar movement_type
+        int quantity
+        decimal unit_price
+        decimal total_amount
+        int supplier_id FK
+        int warehouse_id FK
+        int created_by FK
+        varchar document_number
+        text notes
+        datetime movement_date
+    }
+
+    INVENTORY_CHECKS {
+        int check_id PK
+        int item_id FK
+        int expected_quantity
+        int actual_quantity
+        int difference
+        int checked_by FK
+        datetime check_date
+        text notes
+    }
+
+    AUDIT_LOG {
+        int log_id PK
+        int item_id FK
+        int changed_by FK
+        varchar action
+        int old_quantity
+        int new_quantity
+        datetime changed_at
+    }

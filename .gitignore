@@ -1,0 +1,21 @@
+## Visual Studio / .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.cache
+*.pdb
+
+## Resharper / Rider
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+## NuGet
+*.nupkg
+packages/
+
+## OS
+.DS_Store
+Thumbs.db
